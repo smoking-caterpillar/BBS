@@ -1,0 +1,167 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+ name: pinky-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-pinky
+  namespace: default
+rules:
+- apiGroups: [ "" ]
+  resources: [ "pods", "services", "jobs", "deployments", "configmaps"]
+  verbs: [ "get", "list", "watch", "create", "delete"]
+- apiGroups: [ "apps" ]
+  resources: [ "pods", "services", "jobs", "deployments", "configmaps"]
+  verbs: [ "get", "list", "watch", "create", "delete"]  
+- apiGroups: [ "batch" ]
+  resources: [ "pods", "services", "jobs"]
+  verbs: [ "get", "list", "watch", "create", "delete"]
+- apiGroups: [ "extensions" ]
+  resources: [ "deployments" ]
+  verbs: [ "get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+ name: pinky-rolebind
+ namespace: default
+roleRef:
+ kind: Role
+ name: pod-pinky
+ apiGroup: rbac.authorization.k8s.io
+subjects:
+ - kind: ServiceAccount
+   name: pinky-sa
+   namespace: default
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pinky-configmap
+data:     
+  api.py: |-
+    # Copyright 2021 smoking caterpillar
+
+    from flask import Flask, request
+    import subprocess
+    import os
+
+
+    app = Flask(__name__)
+
+    #app.config.from_object('settings')
+    app.url_map.strict_slashes = False
+
+    @app.route('/')
+    def hello():
+        return "<h1>BBS PINKY API</h1>"
+
+
+    @app.route('/start_pinky')
+    def start_pinky():
+        pinky_script = request.args.get('pinkyscript')
+        bbs_project_id = request.args.get('project_id')
+        bbs_project_code = request.args.get('project_code')
+        input_list_to_use = request.args.get('input')
+        project_manifest_filepath = build_manifest(pinky_script, bbs_project_id, bbs_project_code, input_list_to_use)
+        #try kill the job if its already running...
+        #subprocess.call(['kubectl', 'delete', '-f', project_manifest_filepath])
+        #run the job
+        #subprocess.call(['kubectl', 'apply', '-f', project_manifest_filepath])
+        return "<h1>PINKY</h1><p>pinky starting: %s </p>"%project_manifest_filepath
+    
+    def build_manifest(pinky_script, bbs_project_id, bbs_project_code, input_list_to_use):
+        manifest_template = "/data/BBS/manifests/templates/"+pinky_script
+        head, tail = os.path.split(manifest_template)
+        new_filename = tail.replace(".template","")
+        project_manifest_filepath = "/BBS/output/private/vpn//bbk-app/generated-manifests/"+new_filename
+        template_content = ""
+        with open(manifest_template) as f:
+            template_content = f.read()
+            print(template_content)
+    
+        project_manifest_content = template_content.replace("TASK_NAME", bbs_project_code).replace("BBS_PROJECT_ID", bbs_project_id).replace("BBS_PROJECT_CODE", bbs_project_code).replace("BBS_PROJECT_LIST", input_list_to_use)
+    
+        with open(project_manifest_filepath, "w") as text_file:
+            text_file.write(project_manifest_content)
+        
+        return project_manifest_filepath
+
+  wsgi.py: |-
+    from api import app
+    if __name__ == "__main__":
+        app.run()
+
+
+    
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pinky-deployment
+spec:
+  selector:
+    matchLabels:
+      app: pinky-api
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: pinky-api
+    spec:
+      serviceAccountName: pinky-sa
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory  
+      - name: configmap-volume
+        configMap:
+          defaultMode: 0777
+          name: pinky-configmap 
+      containers:
+      - name: pinky-api
+        image: python:2.7-slim
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data  
+        - name: configmap-volume
+          mountPath: /opt/pinky-api
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          echo Installing components...
+          apt update 
+          apt -y install apt-transport-https gnupg2 curl
+          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - 
+          echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list 
+          apt update
+          apt -y install kubectl
+          kubectl get pods
+          python -m pip install --upgrade pip
+          python -m pip install flask gunicorn
+          export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
+  
+          echo starting pinky api
+          cd /opt/pinky-api
+          gunicorn --bind 0.0.0.0:8000 --log-level=DEBUG wsgi:app
+
+
+        ports:
+        - containerPort: 8000
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: pinky-api-service
+spec:
+  selector:
+    app: pinky-api
+  ports:
+  - protocol: TCP
+    port: 8085
+    targetPort: 8000
+  internalTrafficPolicy: Local
