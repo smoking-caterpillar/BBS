@@ -30,7 +30,8 @@ spec:
           echo Code: BBS_PROJECT_CODE
           echo Id: BBS_PROJECT_ID
           echo List: BBS_PROJECT_LIST
-          
+          apt update
+          apt install unzip -y
           cd /optdata/BBS
           
           mkdir -p output/project-data/BBS_PROJECT_CODE/data/scanner/aquatone/data/$HOSTNAME/
