@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wwwdata-deployment
+spec:
+  selector:
+    matchLabels:
+      app: wwwdata
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: wwwdata
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory   
+      containers:
+      - name: wwwdata
+        image: python:2.7-slim
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data  
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          echo data web server v1
+          cd /data
+          python -m SimpleHTTPServer
+        ports:
+        - containerPort: 8000
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: wwwdata-service
+spec:
+  selector:
+    app: wwwdata
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8000
+  internalTrafficPolicy: Local
