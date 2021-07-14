@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gausubs-BBS_PROJECT_CODE
+  labels:
+    app: gausubs-BBS_PROJECT_CODE
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: gausubs-BBS_PROJECT_CODE
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory
+      containers:
+      - name: gausubs-BBS_PROJECT_CODE
+        image: golang:rc-stretch
+        volumeMounts:
+        - name: data-volume
+          mountPath: /optdata
+        command: 
+        - /bin/bash
+        - -c
+        - |
+          echo Gau Subs v1
+          echo Code: BBS_PROJECT_CODE
+          echo Id: BBS_PROJECT_ID
+          echo List: BBS_PROJECT_LIST
+          cd /optdata/BBS
+          
+          GO111MODULE=on go get -u -v github.com/lc/gau
+          GO111MODULE=on go get -u github.com/tomnomnom/unfurl
+          cat output/project-data/BBS_PROJECT_CODE/scope/generated/inscope.wildcard-domains.txt 
+          
+          echo reading list items
+          counter=0
+          input="output/project-data/BBS_PROJECT_CODE/scope/generated/inscope.wildcard-domains.txt"
+          while IFS= read -r line
+          do
+            echo Running Gau on "$line"
+            domainname = `echo http://$line | unfurl format %r%t`
+            echo looking up $domainname
+            #gau -o /bbk-app/project-data/BBS_PROJECT_CODE/output/$HOSTNAME.$counter.urls.txt -subs $line
+            counter=$((counter+1))
+          done < "$input"
+                    
+          echo all done
+      restartPolicy: Never
+
