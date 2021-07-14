@@ -9,6 +9,12 @@ metadata:
   name: pod-pinky
   namespace: default
 rules:
+- apiGroups: [ "" ]
+  resources: [ "pods", "services", "jobs", "deployments", "configmaps"]
+  verbs: [ "get", "list", "watch", "create", "delete"]
+- apiGroups: [ "apps" ]
+  resources: [ "pods", "services", "jobs", "deployments", "configmaps"]
+  verbs: [ "get", "list", "watch", "create", "delete"]  
 - apiGroups: [ "batch" ]
   resources: [ "pods", "services", "jobs"]
   verbs: [ "get", "list", "watch", "create", "delete"]
@@ -70,8 +76,8 @@ spec:
           echo getting pods...
           kubectl get pods
           cd /optdata/
-          echo removing any previous copies...
-          rm -rf BBS
+          #echo removing any previous copies...
+          #rm -rf BBS
           git clone https://github.com/smoking-caterpillar/BBS
           cd BBS/manifests/base
           kubectl delete -f vpn.yaml

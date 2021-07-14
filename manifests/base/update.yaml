@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bbs-update
+  labels:
+    app: bbs-update
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: bbs-update
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory
+      containers:
+      - name: bbs-update
+        image: python:3.8-slim
+        volumeMounts:
+        - name: data-volume
+          mountPath: /optdata
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          echo Updater v1
+          apt update
+          apt install git -y
+          cd /optdata/
+          echo Updating from GIT...
+          cd BBS
+          git pull
+                    
+          echo all done
+      restartPolicy: Never
+
