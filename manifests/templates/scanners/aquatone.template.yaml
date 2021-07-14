@@ -40,8 +40,12 @@ spec:
           unzip aquatone.zip
           chmod +x aquatone
           ls -la
+          apt search Chromium 
+          apt install Chromium  -y 
           
           cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST | ./aquatone
+          
+          
                     
           echo all done
       restartPolicy: Never
