@@ -35,9 +35,9 @@ spec:
           
           GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei
           
-          mkdir -p output/project-data/BBS_PROJECT_CODE/data/scanner/nuclei/data/$HOSTNAME/
-          cd output/project-data/BBS_PROJECT_CODE/data/scanner/nuclei/
-          nuclei -list /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST -o output/project-data/BBS_PROJECT_CODE/data/scanner/nuclei/data/$HOSTNAME/nuclei.txt
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/nuclei/data/$HOSTNAME/
+
+          nuclei -list /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST -o /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/nuclei/data/$HOSTNAME/nuclei.txt
             
           
                     
