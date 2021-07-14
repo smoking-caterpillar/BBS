@@ -76,13 +76,13 @@ data:
         manifest_template = "/data/BBS/manifests/templates/"+pinky_script
         head, tail = os.path.split(manifest_template)
         new_filename = tail.replace(".template","")
-        project_manifest_filepath = "/BBS/output/private/vpn//bbk-app/generated-manifests/"+new_filename
+        project_manifest_filepath = "/data/BBS/output/private/generated-manifests/"+new_filename
         template_content = ""
         with open(manifest_template) as f:
             template_content = f.read()
             print(template_content)
     
-        project_manifest_content = template_content.replace("TASK_NAME", bbs_project_code).replace("BBS_PROJECT_ID", bbs_project_id).replace("BBS_PROJECT_CODE", bbs_project_code).replace("BBS_PROJECT_LIST", input_list_to_use)
+        project_manifest_content = template_content.replace("BBS_PROJECT_ID", bbs_project_id).replace("BBS_PROJECT_CODE", bbs_project_code).replace("BBS_PROJECT_LIST", input_list_to_use)
     
         with open(project_manifest_filepath, "w") as text_file:
             text_file.write(project_manifest_content)

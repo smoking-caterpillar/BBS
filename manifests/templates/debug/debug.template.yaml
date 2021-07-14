@@ -1,15 +1,15 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: bbs-debug
+  name: bbs-debug-BBS_PROJECT_CODE
   labels:
-    app: bbs-debug
+    app: bbs-debug-BBS_PROJECT_CODE
 spec:
   ttlSecondsAfterFinished: 100
   template:
     metadata:
       labels:
-        app: bbs-debug
+        app: bbs-debug-BBS_PROJECT_CODE
     spec:
       volumes:
       - name: data-volume
@@ -17,7 +17,7 @@ spec:
           path: /mnt/volume_lon1_01
           type: Directory
       containers:
-      - name: bbs-debug
+      - name: bbs-debug-BBS_PROJECT_CODE
         image: python:3.8-slim
         volumeMounts:
         - name: data-volume
@@ -27,6 +27,9 @@ spec:
         - -c
         - |
           echo Debug v1
+          echo Code: BBS_PROJECT_CODE
+          echo Id: BBS_PROJECT_ID
+          echo List: BBS_PROJECT_LIST
           
                     
           echo all done
