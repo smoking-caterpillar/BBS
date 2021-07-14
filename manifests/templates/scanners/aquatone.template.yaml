@@ -38,12 +38,10 @@ spec:
           cd output/project-data/BBS_PROJECT_CODE/data/scanner/aquatone/
           wget -O aquatone.zip https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip
           unzip aquatone.zip
+          chmod +x aquatone
           ls -la
           
-          
-          
-          cd /optdata/BBS
-          cat output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST | aquatone
+          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST | ./aquatone
                     
           echo all done
       restartPolicy: Never
