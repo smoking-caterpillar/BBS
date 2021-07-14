@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bbs-debug-BBS_PROJECT_CODE
+  labels:
+    app: bbs-debug-BBS_PROJECT_CODE
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: bbs-debug-BBS_PROJECT_CODE
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory
+      containers:
+      - name: bbs-debug-BBS_PROJECT_CODE
+        image: python:3.8-slim
+        volumeMounts:
+        - name: data-volume
+          mountPath: /optdata
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          echo Extract Wildcard Domains v1
+          echo Code: BBS_PROJECT_CODE
+          echo Id: BBS_PROJECT_ID
+          echo List: BBS_PROJECT_LIST
+          cd /optdata/BBS
+          mkdir -p output/project-data/BBS_PROJECT_CODE/scope/generated/
+          cat output/project-data/BBS_PROJECT_CODE/scope/inscope.txt | grep "*." > output/project-data/BBS_PROJECT_CODE/scope/generated/scope.wildcard-domains.txt
+          
+                    
+          echo all done
+      restartPolicy: Never
+
