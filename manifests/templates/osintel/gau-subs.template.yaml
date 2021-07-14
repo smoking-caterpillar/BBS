@@ -42,11 +42,14 @@ spec:
           while IFS= read -r line
           do
             echo Running Gau on "$line"
-            domainname=`echo http://$line | unfurl format %r%t`
+            domainname=`echo http://$line | unfurl format %r.%t`
             echo looking up $domainname
-            #gau -o /bbk-app/project-data/BBS_PROJECT_CODE/output/$HOSTNAME.$counter.urls.txt -subs $line
+            mkdir -p output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/
+            gau -o output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/$HOSTNAME.$counter.urls.txt -subs $domainname
             counter=$((counter+1))
           done < "$input"
+          
+          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/$HOSTNAME.*.urls.txt > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.subdomains.txt
                     
           echo all done
       restartPolicy: Never
