@@ -67,11 +67,13 @@ spec:
           echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list 
           apt update
           apt -y install kubectl
+          echo getting pods...
+          kubectl get pods
           cd /optdata/
+          echo removing any previous copies...
+          rm -rf BBS
           git clone https://github.com/smoking-caterpillar/BBS
-          git reset --hard HEAD
-          git pull
-          cd bbs/manifests/base
+          cd BBS/manifests/base
           kubectl delete -f vpn.yaml
           kubectl apply -f vpn.yaml
           kubectl delete -f data-webserver.yaml

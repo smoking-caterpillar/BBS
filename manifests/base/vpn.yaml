@@ -6,10 +6,10 @@ data:
   step1.sh: |-
     #!/bin/bash
     echo ***setting up CA files***
-    rm -rf /data/bbs/output/private/vpn
-    mkdir -p /data/bbs/output/private/vpn/CA
-    chown developer.developer /data/bbs/output/private/vpn -R
-    cd /data/bbs/output/private/vpn/CA
+    rm -rf /data/BBS/output/private/vpn
+    mkdir -p /data/BBS/output/private/vpn/CA
+    chown developer.developer /data/BBS/output/private/vpn -R
+    cd /data/BBS/output/private/vpn/CA
     wget -P ./ https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.8/EasyRSA-3.0.8.tgz
     tar xvf EasyRSA-3.0.8.tgz
     ls -la
@@ -23,10 +23,10 @@ data:
   step2.sh: |-
     #!/bin/bash
     echo ***setting up server files***
-    mkdir -p /data/bbs/output/private/vpn/CA/tmp
-    mkdir -p /data/bbs/output/private/vpn/SERVER/tmp
-    mkdir -p /data/bbs/output/private/vpn/OPENVPN/keys
-    cd /data/bbs/output/private/vpn/SERVER
+    mkdir -p /data/BBS/output/private/vpn/CA/tmp
+    mkdir -p /data/BBS/output/private/vpn/SERVER/tmp
+    mkdir -p /data/BBS/output/private/vpn/OPENVPN/keys
+    cd /data/BBS/output/private/vpn/SERVER
     wget -P ./ https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.8/EasyRSA-3.0.8.tgz
     tar xvf EasyRSA-3.0.8.tgz
     ls -la
@@ -36,55 +36,55 @@ data:
     ./easyrsa init-pki
     echo  gen-req 
     ./easyrsa gen-req server nopass < /etc/hostname
-    cp pki/private/server.key /data/bbs/output/private/vpn/OPENVPN/keys
-    cp pki/reqs/server.req /data/bbs/output/private/vpn/CA/tmp  
-    cd /data/bbs/output/private/vpn/CA/EasyRSA-3.0.8
+    cp pki/private/server.key /data/BBS/output/private/vpn/OPENVPN/keys
+    cp pki/reqs/server.req /data/BBS/output/private/vpn/CA/tmp  
+    cd /data/BBS/output/private/vpn/CA/EasyRSA-3.0.8
     echo import-req
-    ./easyrsa import-req /data/bbs/output/private/vpn/CA/tmp/server.req server
+    ./easyrsa import-req /data/BBS/output/private/vpn/CA/tmp/server.req server
     echo sign-reg
     echo yes | ./easyrsa sign-req server server
-    cp pki/issued/server.crt /data/bbs/output/private/vpn/SERVER/tmp/
-    cp pki/ca.crt /data/bbs/output/private/vpn/SERVER/tmp/
-    cp pki/issued/server.crt /data/bbs/output/private/vpn/OPENVPN/
-    cp pki/ca.crt /data/bbs/output/private/vpn/OPENVPN/
-    cd /data/bbs/output/private/vpn/SERVER
+    cp pki/issued/server.crt /data/BBS/output/private/vpn/SERVER/tmp/
+    cp pki/ca.crt /data/BBS/output/private/vpn/SERVER/tmp/
+    cp pki/issued/server.crt /data/BBS/output/private/vpn/OPENVPN/
+    cp pki/ca.crt /data/BBS/output/private/vpn/OPENVPN/
+    cd /data/BBS/output/private/vpn/SERVER
     cd EasyRSA-3.0.8
     echo gen-dh
     ./easyrsa gen-dh
     openvpn --genkey --secret ta.key
-    cp ta.key /data/bbs/output/private/vpn/OPENVPN/
-    cp pki/dh.pem /data/bbs/output/private/vpn/OPENVPN/
+    cp ta.key /data/BBS/output/private/vpn/OPENVPN/
+    cp pki/dh.pem /data/BBS/output/private/vpn/OPENVPN/
     
   step3.sh: |-
     #!/bin/bash
     echo ***setting up server client files***
-    mkdir -p /data/bbs/output/private/vpn/CA/tmp
-    mkdir -p /data/bbs/output/private/vpn/SERVER/tmp
-    mkdir -p /data/bbs/output/private/vpn/CLIENT_CONFIGS/keys
-    cd /data/bbs/output/private/vpn/CLIENT_CONFIGS
+    mkdir -p /data/BBS/output/private/vpn/CA/tmp
+    mkdir -p /data/BBS/output/private/vpn/SERVER/tmp
+    mkdir -p /data/BBS/output/private/vpn/CLIENT_CONFIGS/keys
+    cd /data/BBS/output/private/vpn/CLIENT_CONFIGS
     chmod -R 700 ./
-    cd /data/bbs/output/private/vpn/SERVER
+    cd /data/BBS/output/private/vpn/SERVER
     cd EasyRSA-3.0.8
     echo client1 | ./easyrsa gen-req client1 nopass
-    cp pki/private/client1.key /data/bbs/output/private/vpn/CLIENT_CONFIGS/keys/
-    cp pki/reqs/client1.req /data/bbs/output/private/vpn/CA/tmp
-    cd /data/bbs/output/private/vpn/CA/EasyRSA-3.0.8
+    cp pki/private/client1.key /data/BBS/output/private/vpn/CLIENT_CONFIGS/keys/
+    cp pki/reqs/client1.req /data/BBS/output/private/vpn/CA/tmp
+    cd /data/BBS/output/private/vpn/CA/EasyRSA-3.0.8
     echo import-req
-    ./easyrsa import-req /data/bbs/output/private/vpn/CA/tmp/client1.req client1
+    ./easyrsa import-req /data/BBS/output/private/vpn/CA/tmp/client1.req client1
     echo sign-req 
     echo yes | ./easyrsa sign-req client client1
-    cp pki/issued/client1.crt /data/bbs/output/private/vpn/SERVER/tmp
-    cp pki/issued/client1.crt /data/bbs/output/private/vpn/CLIENT_CONFIGS/keys
-    cp /data/bbs/output/private/vpn/OPENVPN/ta.key /data/bbs/output/private/vpn/CLIENT_CONFIGS/keys/
-    cp /data/bbs/output/private/vpn/OPENVPN/ca.crt /data/bbs/output/private/vpn/CLIENT_CONFIGS/keys/
+    cp pki/issued/client1.crt /data/BBS/output/private/vpn/SERVER/tmp
+    cp pki/issued/client1.crt /data/BBS/output/private/vpn/CLIENT_CONFIGS/keys
+    cp /data/BBS/output/private/vpn/OPENVPN/ta.key /data/BBS/output/private/vpn/CLIENT_CONFIGS/keys/
+    cp /data/BBS/output/private/vpn/OPENVPN/ca.crt /data/BBS/output/private/vpn/CLIENT_CONFIGS/keys/
     
   step4.sh: |-
     #!/bin/bash
     echo ***setting up server openvpn config files***
-    cp /opt/vpn/openvpn.server.config /data/bbs/output/private/vpn/OPENVPN/server.conf
-    cp /opt/vpn/openvpn.client.config /data/bbs/output/private/vpn/CLIENT_CONFIGS/keys/client1.ovpn
-    zip -r /data/bbs/output/private/vpn/vpn.zip /data/bbs/output/private/vpn/CLIENT_CONFIGS/keys/
-    #cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf /data/bbs/output/private/vpn/OPENVPN/client.base.conf
+    cp /opt/vpn/openvpn.server.config /data/BBS/output/private/vpn/OPENVPN/server.conf
+    cp /opt/vpn/openvpn.client.config /data/BBS/output/private/vpn/CLIENT_CONFIGS/keys/client1.ovpn
+    zip -r /data/BBS/output/private/vpn/vpn.zip /data/BBS/output/private/vpn/CLIENT_CONFIGS/keys/
+    #cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf /data/BBS/output/private/vpn/OPENVPN/client.base.conf
 
   step5.sh: |-
     #!/bin/bash
@@ -93,7 +93,7 @@ data:
     cat /proc/sys/net/ipv4/ip_forward    
     iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
     echo ***Running openvpn server***
-    openvpn --cd /data/bbs/output/private/vpn/OPENVPN --config /data/bbs/output/private/vpn/OPENVPN/server.conf
+    openvpn --cd /data/BBS/output/private/vpn/OPENVPN --config /data/BBS/output/private/vpn/OPENVPN/server.conf
 
   openvpn.server.config: |-
     #################################################
@@ -215,10 +215,10 @@ spec:
           DEBIAN_FRONTEND=noninteractive apt install -y openvpn wget iptables zip
           
           ##force new configs/cert/keys
-          #rm -rf /data/bbs/output/private/vpn/vpn.zip
+          #rm -rf /data/BBS/output/private/vpn/vpn.zip
           
           #check if we already have a client ovpn file... if so skip creating new keys/ovpn 
-          if [[ -f "/data/bbs/output/private/vpn/vpn.zip" ]]
+          if [[ -f "/data/BBS/output/private/vpn/vpn.zip" ]]
           then
             echo found keys and ovpn... using saved keys/ovpn ... skipping new setup...
             apt update
