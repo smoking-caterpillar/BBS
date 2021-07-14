@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+ name: pinky-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-pinky
+  namespace: default
+rules:
+- apiGroups: [ "batch" ]
+  resources: [ "pods", "services", "jobs"]
+  verbs: [ "get", "list", "watch", "create", "delete"]
+- apiGroups: [ "extensions" ]
+  resources: [ "deployments" ]
+  verbs: [ "get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+ name: pinky-rolebind
+ namespace: default
+roleRef:
+ kind: Role
+ name: pod-pinky
+ apiGroup: rbac.authorization.k8s.io
+subjects:
+ - kind: ServiceAccount
+   name: pinky-sa
+   namespace: default
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bbs-install
+  labels:
+    app: bbs-install
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: bbs-install
+    spec:
+      serviceAccountName: pinky-sa
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory
+      containers:
+      - name: bbs-install
+        image: python:3.8-slim
+        volumeMounts:
+        - name: data-volume
+          mountPath: /optdata
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          echo setup v1
+          apt update
+          apt install git -y
+          apt -y install apt-transport-https gnupg2 curl
+          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - 
+          echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list 
+          apt update
+          apt -y install kubectl
+          cd /optdata/
+          git clone https://github.com/smoking-caterpillar/BBS
+          git reset --hard HEAD
+          git pull
+          cd bbs/manifests/base
+          kubectl delete -f vpn.yaml
+          kubectl apply -f vpn.yaml
+          kubectl delete -f data-webserver.yaml
+          kubectl apply -f data-webserver.yaml
+          
+          echo all done
+      restartPolicy: Never
+
