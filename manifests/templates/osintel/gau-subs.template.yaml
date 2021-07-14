@@ -34,7 +34,8 @@ spec:
           
           GO111MODULE=on go get -u -v github.com/lc/gau
           GO111MODULE=on go get -u github.com/tomnomnom/unfurl
-          cat output/project-data/BBS_PROJECT_CODE/scope/generated/inscope.wildcard-domains.txt 
+          GO111MODULE=on go get -u github.com/tomnomnom/anew
+          #cat output/project-data/BBS_PROJECT_CODE/scope/generated/inscope.wildcard-domains.txt 
           
           echo reading list items
           counter=0
@@ -49,7 +50,9 @@ spec:
             counter=$((counter+1))
           done < "$input"
           
-          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/$HOSTNAME.*.urls.txt > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.subdomains.txt
+          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/$HOSTNAME.*.urls.txt | anew > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt
+          
+          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt | unfurl format %d | anew > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt
                     
           echo all done
       restartPolicy: Never
