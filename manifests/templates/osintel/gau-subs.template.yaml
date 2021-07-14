@@ -42,7 +42,7 @@ spec:
           while IFS= read -r line
           do
             echo Running Gau on "$line"
-            domainname = `echo http://$line | unfurl format %r%t`
+            domainname=`echo http://$line | unfurl format %r%t`
             echo looking up $domainname
             #gau -o /bbk-app/project-data/BBS_PROJECT_CODE/output/$HOSTNAME.$counter.urls.txt -subs $line
             counter=$((counter+1))
