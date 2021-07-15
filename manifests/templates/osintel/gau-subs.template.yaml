@@ -40,6 +40,7 @@ spec:
           pip3 install bbrf
           mkdir /root/.bbrf/
           cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
+          bbrf use BBS_PROJECT_CODE
           echo done
           ## BBRF SETUP ##
           
