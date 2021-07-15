@@ -48,6 +48,8 @@ spec:
           cd
           git clone https://github.com/gwen001/github-search
           cd github-search
+          echo installing requirements
+          pip install -r requirements2.txt
           
           #cd /optdata/BBS
           
