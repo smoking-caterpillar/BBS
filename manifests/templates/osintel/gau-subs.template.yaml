@@ -38,7 +38,7 @@ spec:
           pip3 install --upgrade pip
           pip3 install bbrf
           mkdir /root/.bbrf/
-          cp /optdata/BBS/private/bbrs-config.json /root/.bbrf/config.json
+          cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
           echo done
           ## BBRF SETUP ##
           
