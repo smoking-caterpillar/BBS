@@ -30,6 +30,16 @@ spec:
           echo Code: BBS_PROJECT_CODE
           echo Id: BBS_PROJECT_ID
           echo List: BBS_PROJECT_LIST
+          
+          ## BBRF SETUP ##
+          echo setting up bbrf...
+          pip install bbrf
+          mkdir /root/.bbrf/
+          cp /optdata/BBS/private/bbrs-config.json /root/.bbrf/config.json
+          echo done
+          ## BBRF SETUP ##
+          
+          
           cd /optdata/BBS
           
           GO111MODULE=on go get -u -v github.com/lc/gau
@@ -53,6 +63,9 @@ spec:
           cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/$HOSTNAME.*.urls.txt | anew > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt
           
           cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt | unfurl format %d | anew > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt
+          
+          ## Add data into BBRF ##
+          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt | bbrf domain add -
                     
           echo all done
       restartPolicy: Never

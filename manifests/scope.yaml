@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scope-configmap
+data:     
+  config.json: |-
+    {
+        "username": "bbrf",
+        "password": "bbrfr0cks",
+        "couchdb": "https://bbrf-nginx-service:8090/bbrf",
+        "slack_token": "<a slack token to receive notifications>",
+        "discord_webhook": "<your discord webhook if you want one>",
+        "ignore_ssl_errors": true
+    }
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bbs-scope
+  labels:
+    app: bbs-scope
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: bbs-scope
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory
+      - name: configmap-volume
+        configMap:
+          defaultMode: 0777
+          name: scope-configmap
+      containers:
+      - name: bbs-scope
+        image: python:3.8-slim
+        volumeMounts:
+        - name: data-volume
+          mountPath: /optdata
+        - name: configmap-volume
+          mountPath: /opt/bbrf/config.json
+          subPath: config.json
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          echo scope v1
+          pcode="spacex"
+          purl="https://bugcrowd.com/spacex"
+          
+          pip install bbrf 
+          mkdir -p /root/.bbrf/
+          cp /opt/bbrf/config.json /root/.bbrf/config.json
+          cp /opt/bbrf/config.json /optdata/BBS/private/bbrs-config.json
+          #bbrf new $pcode
+          bbrf use $pcode
+          bbrf inscope add '*.starlink.com' 
+          bbrf outscope add '*.spacex.com' 
+
+          
+          
+          cd /optdata/BBS
+          
+          mkdir -p output/project-data/$pcode/scope/
+          echo "*.starlink.com" > output/project-data/$pcode/scope/inscope.txt
+          echo "*.spacex.com" > output/project-data/$pcode/scope/outscope.txt
+          echo $purl > output/project-data/$pcode/scope/readme.txt
+          
+          sleep 60m
+          
+          echo all done
+      restartPolicy: Never
+

@@ -236,6 +236,9 @@ spec:
           
           echo setting up server openvpn config files
           bash /opt/vpn/step4.sh
+          
+          echo showing export....
+          export
             
           echo starting vpn server...
           bash /opt/vpn/step5.sh
