@@ -34,7 +34,7 @@ spec:
           ## BBRF SETUP ##
           echo setting up bbrf...
           apt update
-          apt search python
+          #apt search python
           apt install python3-pip -y
           pip3 install --upgrade pip
           pip3 install bbrf
@@ -71,6 +71,8 @@ spec:
           
           ## Add data into BBRF ##
           cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt | bbrf domain add -
+          
+          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt | bbrf url add -
           
       
           echo all done
