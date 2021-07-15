@@ -68,7 +68,8 @@ spec:
           
           ## Add data into BBRF ##
           cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt | bbrf domain add -
-                    
+          
+          sleep 60m          
           echo all done
       restartPolicy: Never
 
