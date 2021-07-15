@@ -1,0 +1,69 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: github-subs-BBS_PROJECT_CODE
+  labels:
+    app: github-subs-BBS_PROJECT_CODE
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: github-subs-BBS_PROJECT_CODE
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory
+      containers:
+      - name: github-subs-BBS_PROJECT_CODE
+        image: golang:rc-buster
+        volumeMounts:
+        - name: data-volume
+          mountPath: /optdata
+        command: 
+        - /bin/bash
+        - -c
+        - |
+          echo Gau Subs v1
+          echo Code: BBS_PROJECT_CODE
+          echo Id: BBS_PROJECT_ID
+          echo List: BBS_PROJECT_LIST
+          
+          ## BBRF SETUP ##
+          echo setting up bbrf...
+          apt update
+          #apt search python
+          apt install python3-pip -y
+          pip3 install --upgrade pip
+          pip3 install bbrf
+          mkdir /root/.bbrf/
+          cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
+          bbrf use BBS_PROJECT_CODE
+          echo done
+          ## BBRF SETUP ##
+          
+          ## gh  ##
+          cd
+          git clone https://github.com/gwen001/github-search
+          cd github-search
+          
+          #cd /optdata/BBS
+          
+          echo reading list items
+          counter=0
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/
+          input="/optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST"
+          while IFS= read -r line
+          do
+            echo Running github-subdomains on "$line"
+            python github-subdomains.py -d $line -s > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.$counter.domains.txt
+            counter=$((counter+1))
+          done < "$input"
+          
+          #cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.*.domains.txt | bbrf domain add - 
+
+          echo all done
+      restartPolicy: Never
+

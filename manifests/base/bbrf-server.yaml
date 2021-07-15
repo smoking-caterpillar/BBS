@@ -80,7 +80,26 @@ data:
         openssl req -new -x509 -key /etc/nginx/keys/privkey.pem -out /etc/nginx/keys/cert.pem -days 1095 -subj "/C=BE/ST=BBRF/L=BBRF/O=BBRF/CN=bbrf-server"
     fi
     
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bbrf-listener-configmap
+data:     
+  domain.new.hook.sh: |-
+    #!/bin/bash
+    #
+    # BBRF hook - save to ~/.bbrf/hooks/domain/new/resolve.sh
+    # and make sure it is executable: chmod +x resolve.sh
+    #
     
+    domains=$@
+
+    printf '%s\n' ${domains[@]} | dnsx -silent -a -resp | tr -d '[]' | tee \
+          >(awk '{print $1":"$2}' | bbrf domain update -) \
+          >(awk '{print $2":"$1}' | bbrf ip add - -p @INFER) \
+          >(awk '{print $2":"$1}' | bbrf ip update -);
+          
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -97,10 +116,6 @@ spec:
         app: bbrf-server
     spec:
       volumes:
-      - name: data-volume
-        hostPath: 
-          path: /mnt/volume_lon1_01
-          type: Directory   
       - name: configmap-volume
         configMap:
           defaultMode: 0777
@@ -115,14 +130,10 @@ spec:
           value: "admin"
         - name: BBRF_PASSWORD
           value: "bbrfr0cks"
-        volumeMounts:
-        - name: data-volume
-          mountPath: /data  
+        volumeMounts: 
         - name: configmap-volume
           mountPath: /usr/local/bin/bbrf-init.sh
-          subPath: bbrf-init.sh
-
-          
+          subPath: bbrf-init.sh     
         ports:
         - containerPort: 5984
 ---
@@ -161,10 +172,55 @@ spec:
         - name: configmap-volume
           mountPath: /docker-entrypoint.d/nginx-create-self-signed-cert.sh
           subPath: nginx-create-self-signed-cert.sh
-
-          
         ports:
         - containerPort: 443
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bbrf-listener-deployment
+spec:
+  selector:
+    matchLabels:
+      app: bbrf-listener
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: bbrf-listener
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory   
+      - name: configmap-volume
+        configMap:
+          defaultMode: 0777
+          name: bbrf-listener-configmap
+      containers:
+      - name: bbrf-listener
+        image: python:3.8-slim
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          echo bbrf listener v1
+          pip install bbrf 
+          mkdir -p /root/.bbrf/hooks/domain/new/
+          cp /data/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
+          cp /opt/bbrf/domain.new.hook.sh /root/.bbrf/hooks/domain/new/resolve.sh
+          chmod +x /root/.bbrf/hooks/domain/new/resolve.sh
+          ls -la /opt/bbrf/
+          
+          echo running listener
+          bbrf listen      
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data  
+        - name: configmap-volume
+          mountPath: /opt/bbrf
+
 ---
 kind: Service
 apiVersion: v1
