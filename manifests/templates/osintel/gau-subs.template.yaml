@@ -34,9 +34,9 @@ spec:
           ## BBRF SETUP ##
           echo setting up bbrf...
           apt update
-          apt install python3-pip -y
-          pip3 install --upgrade pip
-          pip3 install bbrf
+          apt install python-pip -y
+          pip install --upgrade pip
+          pip install bbrf
           mkdir /root/.bbrf/
           cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
           echo done
@@ -70,7 +70,7 @@ spec:
           ## Add data into BBRF ##
           cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt | bbrf domain add -
           
-          sleep 60m          
+      
           echo all done
       restartPolicy: Never
 
