@@ -34,9 +34,10 @@ spec:
           ## BBRF SETUP ##
           echo setting up bbrf...
           apt update
-          apt install python-pip -y
-          pip install --upgrade pip
-          pip install bbrf
+          apt search python
+          apt install python3-pip -y
+          pip3 install --upgrade pip
+          pip3 install bbrf
           mkdir /root/.bbrf/
           cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
           echo done
