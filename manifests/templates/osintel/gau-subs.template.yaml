@@ -18,7 +18,7 @@ spec:
           type: Directory
       containers:
       - name: gausubs-BBS_PROJECT_CODE
-        image: golang:rc-stretch
+        image: golang:rc-buster
         volumeMounts:
         - name: data-volume
           mountPath: /optdata
