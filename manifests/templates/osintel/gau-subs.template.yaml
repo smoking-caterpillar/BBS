@@ -33,6 +33,7 @@ spec:
           
           ## BBRF SETUP ##        
           cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
+          bbrf new BBS_PROJECT_CODE
           bbrf use BBS_PROJECT_CODE
           echo done
           ## BBRF SETUP ##
