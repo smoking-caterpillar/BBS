@@ -18,7 +18,7 @@ spec:
           type: Directory
       containers:
       - name: gausubs-BBS_PROJECT_CODE
-        image: golang:rc-buster
+        image: smokingcaterpillar/bbs-osintel-gau-subs
         volumeMounts:
         - name: data-volume
           mountPath: /optdata
@@ -31,27 +31,13 @@ spec:
           echo Id: BBS_PROJECT_ID
           echo List: BBS_PROJECT_LIST
           
-          ## BBRF SETUP ##
-          echo setting up bbrf...
-          apt update
-          #apt search python
-          apt install python3-pip -y
-          pip3 install --upgrade pip
-          pip3 install bbrf
-          mkdir /root/.bbrf/
+          ## BBRF SETUP ##        
           cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
           bbrf use BBS_PROJECT_CODE
           echo done
           ## BBRF SETUP ##
           
-          
           cd /optdata/BBS
-          
-          GO111MODULE=on go get -u -v github.com/lc/gau
-          GO111MODULE=on go get -u github.com/tomnomnom/unfurl
-          GO111MODULE=on go get -u github.com/tomnomnom/anew
-          #cat output/project-data/BBS_PROJECT_CODE/scope/generated/inscope.wildcard-domains.txt 
-          
           echo reading list items
           counter=0
           input="output/project-data/BBS_PROJECT_CODE/scope/generated/inscope.wildcard-domains.txt"
