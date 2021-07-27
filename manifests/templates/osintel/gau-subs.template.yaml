@@ -32,10 +32,9 @@ spec:
           echo List: BBS_PROJECT_LIST
           
           ## BBRF SETUP ##        
+          echo setting up BBRF...
           cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
-          bbrf new BBS_PROJECT_CODE
           bbrf use BBS_PROJECT_CODE
-          echo done
           ## BBRF SETUP ##
           
           cd /optdata/BBS
@@ -53,12 +52,10 @@ spec:
           done < "$input"
           
           cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/$HOSTNAME.*.urls.txt | anew > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt
-          
           cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt | unfurl format %d | anew > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt
           
           ## Add data into BBRF ##
           cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt | bbrf domain add -
-          
           cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt | bbrf url add -
           
       

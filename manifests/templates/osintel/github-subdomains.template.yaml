@@ -18,7 +18,7 @@ spec:
           type: Directory
       containers:
       - name: github-subs-BBS_PROJECT_CODE
-        image: golang:rc-buster
+        image: smokingcaterpillar/bbs-osintel-github-subs
         volumeMounts:
         - name: data-volume
           mountPath: /optdata
@@ -32,27 +32,12 @@ spec:
           echo List: BBS_PROJECT_LIST
           
           ## BBRF SETUP ##
-          echo setting up bbrf...
-          apt update
-          #apt search python
-          apt install python3-pip -y
-          pip3 install --upgrade pip
-          pip3 install bbrf
-          mkdir /root/.bbrf/
+          echo setting up BBRF...
           cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
           bbrf use BBS_PROJECT_CODE
-          echo done
           ## BBRF SETUP ##
           
-          ## gh  ##
-          cd
-          git clone https://github.com/gwen001/github-search
-          cd github-search
-          echo installing requirements
-          pip3 install -r requirements3.txt
-          
-          #cd /optdata/BBS
-          
+          cd /opt/github-search/
           echo reading list items
           counter=0
           mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/
@@ -60,7 +45,7 @@ spec:
           while IFS= read -r line
           do
             echo Running github-subdomains on "$line"
-            python3 github-subdomains.py -d $line -s > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.$counter.domains.txt
+            python3 -t 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 github-subdomains.py -d $line -s > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.$counter.domains.txt
             counter=$((counter+1))
           done < "$input"
           
