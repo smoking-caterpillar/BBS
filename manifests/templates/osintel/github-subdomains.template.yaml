@@ -19,6 +19,12 @@ spec:
       containers:
       - name: github-subs-BBS_PROJECT_CODE
         image: smokingcaterpillar/bbs-osintel-github-subs
+        env:
+        - name: SECRET_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: bbs-config
+              key: github-token
         volumeMounts:
         - name: data-volume
           mountPath: /optdata
@@ -30,6 +36,7 @@ spec:
           echo Code: BBS_PROJECT_CODE
           echo Id: BBS_PROJECT_ID
           echo List: BBS_PROJECT_LIST
+          echo Github Token: $SECRET_USERNAME
           
           ## BBRF SETUP ##
           echo setting up BBRF...
