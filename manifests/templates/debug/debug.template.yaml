@@ -37,16 +37,18 @@ spec:
           bbrf use BBS_PROJECT_CODE
           ## BBRF SETUP ##
           
-          echo scope in
-          bbrf scope in
-          echo scope out
-          bbrf scope out
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/debug/
+          
+          echo dumping scope in
+          bbrf scope in > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/debug/scope.in.txt
+          echo dumping scope out
+          bbrf scope out > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/debug/scope.out.txt
           echo ""
-          echo domains
-          bbrf domains
+          echo dumping domains
+          bbrf domains > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/debug/domains.txt
           echo ""
-          echo urls
-          bbrf urls
+          echo dumping urls
+          bbrf urls > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/debug/urls.txt
           echo ""
                     
           echo all done
