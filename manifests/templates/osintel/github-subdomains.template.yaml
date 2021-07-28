@@ -56,7 +56,8 @@ spec:
             counter=$((counter+1))
           done < "$input"
           
-          #cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.*.domains.txt | bbrf domain add - 
+          echo adding discovered domains to BBRF
+          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.*.domains.txt | grep -v ">>>" | bbrf domain add - 
 
           echo all done
       restartPolicy: Never
