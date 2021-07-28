@@ -18,7 +18,7 @@ spec:
           type: Directory
       containers:
       - name: bbs-debug-BBS_PROJECT_CODE
-        image: python:3.8-slim
+        image: smokingcaterpillar/bbs-osintel-github-subs
         volumeMounts:
         - name: data-volume
           mountPath: /optdata
@@ -30,6 +30,20 @@ spec:
           echo Code: BBS_PROJECT_CODE
           echo Id: BBS_PROJECT_ID
           echo List: BBS_PROJECT_LIST
+          
+          ## BBRF SETUP ##
+          echo setting up BBRF...
+          cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
+          bbrf use BBS_PROJECT_CODE
+          ## BBRF SETUP ##
+          
+          echo scope in
+          bbrf scope in
+          echo scope out
+          bbrf scope out
+          
+          echo domains
+          bbrf domains
           
                     
           echo all done
