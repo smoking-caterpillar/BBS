@@ -41,10 +41,13 @@ spec:
           bbrf scope in
           echo scope out
           bbrf scope out
-          
+          echo ""
           echo domains
           bbrf domains
-          
+          echo ""
+          echo urls
+          bbrf urls
+          echo ""
                     
           echo all done
       restartPolicy: Never

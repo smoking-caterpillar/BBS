@@ -1,15 +1,15 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: github-subs-BBS_PROJECT_CODE
+  name: github-endpoints-BBS_PROJECT_CODE
   labels:
-    app: github-subs-BBS_PROJECT_CODE
+    app: github-endpoints-BBS_PROJECT_CODE
 spec:
   ttlSecondsAfterFinished: 100
   template:
     metadata:
       labels:
-        app: github-subs-BBS_PROJECT_CODE
+        app: github-endpoints-BBS_PROJECT_CODE
     spec:
       volumes:
       - name: data-volume
@@ -17,7 +17,7 @@ spec:
           path: /mnt/volume_lon1_01
           type: Directory
       containers:
-      - name: github-subs-BBS_PROJECT_CODE
+      - name: github-endpoints-BBS_PROJECT_CODE
         image: smokingcaterpillar/bbs-osintel-github-subs
         env:
         - name: SECRET_USERNAME
@@ -32,7 +32,7 @@ spec:
         - /bin/bash
         - -c
         - |
-          echo Github Subs v1
+          echo endpoints v1
           echo Code: BBS_PROJECT_CODE
           echo Id: BBS_PROJECT_ID
           echo List: BBS_PROJECT_LIST
@@ -47,17 +47,17 @@ spec:
           cd /opt/github-search/
           echo reading list items
           counter=0
-          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-endpoints/data/$HOSTNAME/
           input="/optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST"
           while IFS= read -r line
           do
-            echo Running github-subdomains on "$line"
-            python3 github-subdomains.py -t $SECRET_USERNAME -d $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.$counter.domains.txt
+            echo Running github-endpoints on "$line"
+            python3 github-endpoints.py -t $SECRET_USERNAME -d $line -r > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-endpoints/data/$HOSTNAME/$HOSTNAME.$counter.urls.txt
             counter=$((counter+1))
           done < "$input"
           
-          echo adding discovered domains to BBRF
-          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.*.domains.txt | grep -v ">>>" | bbrf domain add - 
+          echo adding discovered urls to BBRF
+          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-endpoints/data/$HOSTNAME/$HOSTNAME.*.urls.txt | bbrf url add - 
 
           echo all done
       restartPolicy: Never
