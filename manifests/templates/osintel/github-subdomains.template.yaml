@@ -52,7 +52,7 @@ spec:
           while IFS= read -r line
           do
             echo Running github-subdomains on "$line"
-            python3 github-subdomains.py -t $SECRET_USERNAME -d $line -s > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.$counter.domains.txt
+            python3 github-subdomains.py -t $SECRET_USERNAME -d $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.$counter.domains.txt
             counter=$((counter+1))
           done < "$input"
           
