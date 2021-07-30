@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dnmasscan-BBS_PROJECT_CODE
+  labels:
+    app: dnmasscan-BBS_PROJECT_CODE
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: dnmasscan-BBS_PROJECT_CODE
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory
+      containers:
+      - name: dnmasscan-BBS_PROJECT_CODE
+        image: golang:rc-stretch
+        volumeMounts:
+        - name: data-volume
+          mountPath: /optdata
+        command: 
+        - /bin/bash
+        - -c
+        - |
+          echo dnmasscan v1
+          echo Code: BBS_PROJECT_CODE
+          echo Id: BBS_PROJECT_ID
+          echo List: BBS_PROJECT_LIST
+          
+          apt-get install git make gcc -y
+          
+          cd /opt
+          git clone https://github.com/robertdavidgraham/masscan
+          cd masscan
+          make
+          make install 
+          
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/dnmasscan/data/$HOSTNAME/
+          cd /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/dnmasscan/
+          
+          masscan -h > masscan.txt
+          
+          
+                    
+          echo all done
+      restartPolicy: Never
+
