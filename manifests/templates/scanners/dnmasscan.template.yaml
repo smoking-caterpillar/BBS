@@ -31,6 +31,7 @@ spec:
           echo Id: BBS_PROJECT_ID
           echo List: BBS_PROJECT_LIST
           
+          apt update
           apt-get install git make gcc bind9-dnsutils -y
           
           cd /opt
