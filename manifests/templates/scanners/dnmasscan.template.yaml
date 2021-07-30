@@ -31,7 +31,7 @@ spec:
           echo Id: BBS_PROJECT_ID
           echo List: BBS_PROJECT_LIST
           
-          apt-get install git make gcc -y
+          apt-get install git make gcc bind9-dnsutils -y
           
           cd /opt
           git clone https://github.com/robertdavidgraham/masscan
