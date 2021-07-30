@@ -47,11 +47,12 @@ spec:
           
           bbrf domains --view unresolved -p "BBS_PROJECT_CODE" > unresolved.txt 
           cat unresolved.txt | dnsx -silent -a -resp | tr -d '[]' > dnsx.log.txt
-          cat dnsx.log.txt | tee >(awk '{print $1":"$2}')
-          cat dnsx.log.txt | tee >(awk '{print $1":"$2}' | bbrf domain update - -p "BBS_PROJECT_CODE" -s dnsx)
-          cat dnsx.log.txt | tee >(awk '{print $1":"$2}' | bbrf domain add - -p "BBS_PROJECT_CODE" -s dnsx)
-          cat dnsx.log.txt | tee >(awk '{print $2":"$1}' | bbrf ip add - -p "BBS_PROJECT_CODE" -s dnsx)
-          cat dnsx.log.txt | tee >(awk '{print $2":"$1}' | bbrf ip update - -p "BBS_PROJECT_CODE" -s dnsx)
+          cat dnsx.log.txt | tee >(awk '{print $1":"$2}') > domain-ip.txt
+          cat domain-ip.txt | bbrf domain update - -p "BBS_PROJECT_CODE" -s dnsx
+          cat domain-ip.txt | bbrf domain add - -p "BBS_PROJECT_CODE" -s dnsx
+          cat dnsx.log.txt | tee >(awk '{print $2":"$1}') > ip-domain.txt
+          cat ip-domain.txt | bbrf ip add - -p "BBS_PROJECT_CODE" -s dnsx
+          cat ip-domain.txt | bbrf ip update - -p "BBS_PROJECT_CODE" -s dnsx
           
           
           echo all done
