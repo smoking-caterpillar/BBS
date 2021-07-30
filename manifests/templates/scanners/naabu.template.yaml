@@ -41,8 +41,15 @@ spec:
           mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/naabu/data/$HOSTNAME/
           cd /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/naabu/
           
-          naabu -exclude-cdn -no-color -o naabu.log.txt -nmap-cli 'nmap -sV -oA naabu-output' -iL "/optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST" 
+          #naabu -exclude-cdn -no-color -o naabu.log.txt -nmap-cli 'nmap -sV -oA naabu-output' -iL "/optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST" 
           
+          NMAP_FILE=naabu-output.gnmap
+          egrep -v "^#|Status: Up" $NMAP_FILE | cut -d' ' -f2,4- | \
+          sed -n -e 's/Ignored.*//p'  | \
+          awk '{for(i=2; i<=NF; i++) { a=a" "$i; }; split(a,s,","); for(e in s) { split(s[e],v,"/"); printf "%s:%s:%s\n" , $1, v[1], v[5]}; a="" }' > bbrfdata.txt
+          cat bbrfdata.txt
+          #bbrf service add - -t hostname:$i 
+
           
           
                     
