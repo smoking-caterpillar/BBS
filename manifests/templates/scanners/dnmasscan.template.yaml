@@ -18,7 +18,7 @@ spec:
           type: Directory
       containers:
       - name: dnmasscan-BBS_PROJECT_CODE
-        image: python:2.7-slim
+        image: debian/bullseye-slim
         volumeMounts:
         - name: data-volume
           mountPath: /optdata
@@ -33,6 +33,9 @@ spec:
           
           apt update
           apt-get install git make gcc bind9-dnsutils -y
+          apt search dnsutils
+          apt search dig
+          
           
           cd /opt
           git clone https://github.com/robertdavidgraham/masscan
