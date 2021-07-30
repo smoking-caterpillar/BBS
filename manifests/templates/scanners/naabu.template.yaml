@@ -18,7 +18,7 @@ spec:
           type: Directory
       containers:
       - name: naabu-BBS_PROJECT_CODE
-        image: golang:rc-stretch
+        image: smokingcaterpillar/bbs-osintel-github-subs
         volumeMounts:
         - name: data-volume
           mountPath: /optdata
