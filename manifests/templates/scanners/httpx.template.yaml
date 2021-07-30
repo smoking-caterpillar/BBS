@@ -34,7 +34,7 @@ spec:
           
           
           mkdir -p output/project-data/BBS_PROJECT_CODE/data/scanner/httpx/data/$HOSTNAME/
-          cd output/project-data/BBS_PROJECT_CODE/data/scanner/httpx/
+          cd /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/httpx/
           
           
           
