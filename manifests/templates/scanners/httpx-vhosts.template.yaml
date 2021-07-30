@@ -37,6 +37,7 @@ spec:
           cd /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/httpx-vhosts/
           
           
+          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST
           
           cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST | httpx -no-color -vhost -vhost-input "/optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST"  -status-code -verbose 
           
