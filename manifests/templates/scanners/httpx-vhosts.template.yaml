@@ -39,7 +39,7 @@ spec:
           
           cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST
           
-          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST | httpx -no-color -vhost -status-code -verbose 
+          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST | httpx -no-color -vhost -status-code -verbose > data/$HOSTNAME/httpx-vhosts.txt
           
           cp data/$HOSTNAME/httpx-vhosts.txt ./httpx-vhosts.txt
 
