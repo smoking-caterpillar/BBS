@@ -42,10 +42,10 @@ spec:
           GO111MODULE=on go get -v github.com/projectdiscovery/dnsx/cmd/dnsx
           
           bbrf domains --view unresolved | dnsx -silent -a -resp | tr -d '[]' | tee \
-            >(awk '{print $1":"$2}' | bbrf domain update - -s dnsx) \
-            >(awk '{print $1":"$2}' | bbrf domain add - -s dnsx) \
-            >(awk '{print $2":"$1}' | bbrf ip add - -s dnsx) \
-            >(awk '{print $2":"$1}' | bbrf ip update - -s dnsx)
+          >(awk '{print $1":"$2}' | bbrf domain update - -s dnsx) \
+          >(awk '{print $1":"$2}' | bbrf domain add - -s dnsx) \
+          >(awk '{print $2":"$1}' | bbrf ip add - -s dnsx) \
+          >(awk '{print $2":"$1}' | bbrf ip update - -s dnsx)
           
           echo all done
       restartPolicy: Never
