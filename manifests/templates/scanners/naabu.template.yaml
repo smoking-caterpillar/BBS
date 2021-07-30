@@ -18,7 +18,7 @@ spec:
           type: Directory
       containers:
       - name: naabu-BBS_PROJECT_CODE
-        image: debian:bullseye-slim
+        image: golang:rc-stretch
         volumeMounts:
         - name: data-volume
           mountPath: /optdata
