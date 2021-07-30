@@ -39,10 +39,15 @@ spec:
           make
           make install 
           
+          cd /opt
+          git clone https://github.com/rastating/dnmasscan
+          
+          
           mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/dnmasscan/data/$HOSTNAME/
           cd /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/dnmasscan/
           
-          masscan -h > masscan.txt
+          bash /opt/dnmasscan/dnmasscan "/optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST" dns.log.txt
+          
           
           
                     
