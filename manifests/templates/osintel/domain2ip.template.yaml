@@ -41,6 +41,10 @@ spec:
           echo installing dnsx
           GO111MODULE=on go get -v github.com/projectdiscovery/dnsx/cmd/dnsx
           
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/domain2ip/
+          cd /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/domain2ip/
+          
+          
           bbrf domains --view unresolved -p "BBS_PROJECT_CODE" > unresolved.txt 
           cat unresolved.txt | dnsx -silent -a -resp | tr -d '[]' > dnsx.log.txt
           cat dnsx.log.txt | tee >(awk '{print $1":"$2}')
