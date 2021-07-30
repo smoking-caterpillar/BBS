@@ -39,6 +39,8 @@ spec:
           
           
           cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST | httpx -no-color -title -tech-detect -status-code -follow-redirects > data/$HOSTNAME/httpx.txt
+          
+          cp data/$HOSTNAME/httpx.txt ./httpx.txt
 
           
           
