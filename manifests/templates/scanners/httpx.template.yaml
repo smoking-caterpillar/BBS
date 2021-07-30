@@ -33,7 +33,7 @@ spec:
           GO111MODULE=on go get -v github.com/projectdiscovery/httpx/cmd/httpx
           
           
-          mkdir -p output/project-data/BBS_PROJECT_CODE/data/scanner/httpx/data/$HOSTNAME/
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/httpx/data/$HOSTNAME/
           cd /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/httpx/
           
           
