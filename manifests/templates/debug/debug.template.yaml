@@ -55,6 +55,12 @@ spec:
           echo ""
           echo dumping services
           bbrf services > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/debug/services.txt
+          echo dumping http services
+          bbrf services where service is http > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/debug/services.http.txt
+          echo ""        
+          echo dumping https services
+          bbrf services where service is ssl/http > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/debug/services.https.txt
+          bbrf services where service is https > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/debug/services.https2.txt
           echo ""        
             
           echo all done
