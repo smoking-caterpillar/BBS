@@ -53,7 +53,10 @@ spec:
           echo dumping urls
           bbrf urls > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/debug/urls.txt
           echo ""
-                    
+          echo dumping services
+          bbrf services > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/debug/services.txt
+          echo ""        
+            
           echo all done
       restartPolicy: Never
 
