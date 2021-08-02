@@ -57,7 +57,7 @@ spec:
           done < "$input"
           
           echo adding discovered urls to BBRF
-          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-endpoints/data/$HOSTNAME/$HOSTNAME.*.urls.txt | bbrf url add - 
+          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-endpoints/data/$HOSTNAME/$HOSTNAME.*.urls.txt | bbrf url add - -t "added_by:github-endpoints"
 
           echo all done
       restartPolicy: Never

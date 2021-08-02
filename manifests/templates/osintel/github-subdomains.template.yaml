@@ -57,7 +57,7 @@ spec:
           done < "$input"
           
           echo adding discovered domains to BBRF
-          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.*.domains.txt | grep -v ">>>" | bbrf domain add - 
+          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/github-subdomains/data/$HOSTNAME/$HOSTNAME.*.domains.txt | grep -v ">>>" | bbrf domain add - -t "added_by:github-subdomains"
 
           echo all done
       restartPolicy: Never
