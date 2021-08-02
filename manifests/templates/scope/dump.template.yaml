@@ -1,0 +1,68 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bbrf-dump-BBS_PROJECT_CODE
+  labels:
+    app: bbrf-dump-BBS_PROJECT_CODE
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: bbrf-dump-BBS_PROJECT_CODE
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory
+      containers:
+      - name: bbrf-dump-BBS_PROJECT_CODE
+        image: smokingcaterpillar/bbs-osintel-github-subs
+        volumeMounts:
+        - name: data-volume
+          mountPath: /optdata
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          echo bbrf-dump v1
+          echo Code: BBS_PROJECT_CODE
+          echo Id: BBS_PROJECT_ID
+          echo List: BBS_PROJECT_LIST
+          
+          ## BBRF SETUP ##
+          echo setting up BBRF...
+          cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
+          bbrf use BBS_PROJECT_CODE
+          ## BBRF SETUP ##
+          
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/
+          
+          echo dumping scope in
+          bbrf scope in > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/scope.in.txt
+          echo dumping scope out
+          bbrf scope out > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/scope.out.txt
+          echo ""
+          echo dumping domains
+          bbrf domains > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/domains.txt
+          echo ""
+          echo dumping ips
+          bbrf ips > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/ips.txt
+          echo ""
+          echo dumping urls
+          bbrf urls > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/urls.txt
+          echo ""
+          echo dumping services
+          bbrf services > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/services.txt
+          echo dumping http services
+          bbrf services where service is http > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/services.http.txt
+          echo ""        
+          echo dumping https services
+          bbrf services where service is ssl/http > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/services.https.txt
+          bbrf services where service is https > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/services.https2.txt
+          echo ""        
+            
+          echo all done
+      restartPolicy: Never
+
