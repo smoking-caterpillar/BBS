@@ -44,7 +44,7 @@ spec:
           bbrf use BBS_PROJECT_CODE
           ## BBRF SETUP ##
           
-          easy_install shodan
+          pip install shodan
           shodan init $SHODANTOKEN
           
           echo reading list items
