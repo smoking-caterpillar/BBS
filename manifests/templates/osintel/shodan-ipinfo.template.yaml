@@ -54,7 +54,7 @@ spec:
           while IFS= read -r line
           do
             echo Running shodan host on IP: "$line"
-            shodan -H host $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-ipinfo.txt
+            shodan host -H $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-ipinfo.txt
             counter=$((counter+1))
           done < "$input"
           
