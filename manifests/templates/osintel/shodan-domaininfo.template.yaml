@@ -54,7 +54,8 @@ spec:
           while IFS= read -r line
           do
             echo Running shodan domain on "$line"
-            shodan domain $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-domaininfo.txt
+            shodan -H -T a domain $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.a.shodan-domaininfo.txt
+            shodan -H -T cname domain $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.cname.shodan-domaininfo.txt
             counter=$((counter+1))
           done < "$input"
           
