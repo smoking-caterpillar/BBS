@@ -39,7 +39,7 @@ spec:
 
           nuclei -list /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST -o /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/nuclei/data/$HOSTNAME/nuclei.txt
             
-          
+          cp /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/nuclei/data/$HOSTNAME/nuclei.txt /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/nuclei/nuclei.txt
                     
           echo all done
       restartPolicy: Never

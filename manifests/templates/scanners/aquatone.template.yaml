@@ -34,7 +34,7 @@ spec:
           apt install unzip -y
           cd /optdata/BBS
           
-          mkdir -p output/project-data/BBS_PROJECT_CODE/data/scanner/aquatone/data/$HOSTNAME/
+          mkdir -p output/project-data/BBS_PROJECT_CODE/data/scanner/aquatone/
           cd output/project-data/BBS_PROJECT_CODE/data/scanner/aquatone/
           wget -O aquatone.zip https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip
           unzip aquatone.zip
