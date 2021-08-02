@@ -50,11 +50,12 @@ spec:
           echo reading list items
           counter=0
           mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/
+          cd /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/
           input="/optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST"
           while IFS= read -r line
           do
             echo Running shodan domain on "$line"
-            shodan domain -T a,cname $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-domaininfo.txt
+            shodan domain -S -T a,cname $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-domaininfo.txt
             shodan domain -H -T a,cname $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-domaininfo-history.txt
             counter=$((counter+1))
           done < "$input"
