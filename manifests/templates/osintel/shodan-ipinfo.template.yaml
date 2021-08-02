@@ -54,12 +54,14 @@ spec:
           while IFS= read -r line
           do
             echo Running shodan host on IP: "$line"
-            shodan host --history $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-ipinfo.txt
+            shodan host $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-ipinfo.txt
+            shodan host --history $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-ipinfo-history.txt
             counter=$((counter+1))
           done < "$input"
           
           echo adding discovered urls to BBRF
           cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/*.shodan-ipinfo.txt > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/shodan-ipinfo.lastrun.all.txt
+          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/*.shodan-ipinfo-history.txt > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/shodan-ipinfo-history.lastrun.all.txt
 
           echo all done
       restartPolicy: Never

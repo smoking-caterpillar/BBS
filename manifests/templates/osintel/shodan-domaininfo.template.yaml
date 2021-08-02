@@ -54,13 +54,16 @@ spec:
           while IFS= read -r line
           do
             echo Running shodan domain on "$line"
-            shodan domain -H -T a $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.a.shodan-domaininfo.txt
-            shodan domain -H -T cname $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.cname.shodan-domaininfo.txt
+            shodan domain -T a $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.a.shodan-domaininfo.txt
+            shodan domain -T cname $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.cname.shodan-domaininfo.txt
+            shodan domain -H -T a $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.a.shodan-domaininfo-history.txt
+            shodan domain -H -T cname $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.cname.shodan-domaininfo-history.txt
             counter=$((counter+1))
           done < "$input"
           
           #echo adding discovered urls to BBRF
           cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/*.shodan-domaininfo.txt > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/shodan-domaininfo.lastrun.all.txt
+          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/*.shodan-domaininfo-history.txt > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/shodan-domaininfo-history.lastrun.all.txt
 
           echo all done
       restartPolicy: Never
