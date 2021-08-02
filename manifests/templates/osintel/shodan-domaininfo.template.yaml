@@ -55,13 +55,13 @@ spec:
           while IFS= read -r line
           do
             echo Running shodan domain on "$line"
-            shodan domain -S -T a,cname $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-domaininfo.txt
+            shodan domain -T a,cname $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-domaininfo.txt
             
             domain=`echo $line | sed 's/*//'`
             cat $line.shodan-domaininfo.txt | cut -s -d " " -f 1 > $line.extracted.txt
             sed -e "s/$/$domain/" -i $line.extracted.txt
             
-            cat $line.extracted.txt | bbrf domain add - -p "BBS_PROJECT_CODE" -s "shodan-domaininfo"
+            cat $line.extracted.txt | bbrf domain add - -p "BBS_PROJECT_CODE" -t "added_by:shodan-domaininfo"
 
 
             shodan domain -H -T a,cname $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-domaininfo-history.txt
