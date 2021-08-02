@@ -1,0 +1,66 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: shodan-ipinfo-BBS_PROJECT_CODE
+  labels:
+    app: shodan-BBS_PROJECT_CODE
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: shodan-ipinfo-BBS_PROJECT_CODE
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory
+      containers:
+      - name: shodan-ipinfo-BBS_PROJECT_CODE
+        image: smokingcaterpillar/bbs-osintel-github-subs
+        env:
+        - name: SHODANTOKEN
+          valueFrom:
+            secretKeyRef:
+              name: bbs-config
+              key: shodan-token
+        volumeMounts:
+        - name: data-volume
+          mountPath: /optdata
+        command: 
+        - /bin/bash
+        - -c
+        - |
+          echo shodan-ipinfo v1
+          echo Code: BBS_PROJECT_CODE
+          echo Id: BBS_PROJECT_ID
+          echo List: BBS_PROJECT_LIST
+          echo Shodan Token: $SHODANTOKEN
+          
+          ## BBRF SETUP ##
+          echo setting up BBRF...
+          cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
+          bbrf use BBS_PROJECT_CODE
+          ## BBRF SETUP ##
+          
+          python3 -m pip install shodan
+          shodan init $SHODANTOKEN
+          
+          echo reading list items
+          counter=0
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/
+          input="/optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST"
+          while IFS= read -r line
+          do
+            echo Running shodan host on IP: "$line"
+            shodan host $line > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/$line.shodan-ipinfo.txt
+            counter=$((counter+1))
+          done < "$input"
+          
+          echo adding discovered urls to BBRF
+          cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/data/$HOSTNAME/*.shodan-ipinfo.txt > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/shodan/shodan-ipinfo.lastrun.all.txt
+
+          echo all done
+      restartPolicy: Never
+
