@@ -18,7 +18,7 @@ spec:
           type: Directory
       containers:
       - name: aquatone-BBS_PROJECT_CODE
-        image: golang:rc-stretch
+        image: smokingcaterpillar/bbs-osintel-gau-subs
         volumeMounts:
         - name: data-volume
           mountPath: /optdata
@@ -34,6 +34,7 @@ spec:
           apt install unzip -y
           cd /optdata/BBS
           
+          
           mkdir -p output/project-data/BBS_PROJECT_CODE/data/scanner/aquatone/
           cd output/project-data/BBS_PROJECT_CODE/data/scanner/aquatone/
           wget -O aquatone.zip https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip
@@ -44,6 +45,8 @@ spec:
           apt install chromium  -y 
           
           cat /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST | ./aquatone
+          
+          cat aquatone_urls.txt | bbrf url add - -t "added_by:aquatone"
           
           
                     
