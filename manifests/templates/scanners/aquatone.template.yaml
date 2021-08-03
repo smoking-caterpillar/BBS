@@ -32,6 +32,14 @@ spec:
           echo List: BBS_PROJECT_LIST
           apt update
           apt install unzip -y
+          
+          ## BBRF SETUP ##
+          echo setting up BBRF...
+          cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
+          bbrf use BBS_PROJECT_CODE
+          ## BBRF SETUP ##
+          
+          
           cd /optdata/BBS
           
           
