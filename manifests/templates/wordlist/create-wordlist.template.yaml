@@ -18,7 +18,7 @@ spec:
           type: Directory
       containers:
       - name: wordlist-generator-BBS_PROJECT_CODE
-        image: smokingcaterpillar/bbs-osintel-github-subs
+        image: smokingcaterpillar/bbs-osintel-gau-subs
         volumeMounts:
         - name: data-volume
           mountPath: /optdata
