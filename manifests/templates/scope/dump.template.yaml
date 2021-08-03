@@ -51,7 +51,7 @@ spec:
           bbrf ips > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/ips.txt
           echo ""
           echo dumping urls
-          bbrf urls > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/urls.txt
+          bbrf urls --with-query > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/urls.txt
           echo ""
           echo dumping services
           bbrf services > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/services.txt
