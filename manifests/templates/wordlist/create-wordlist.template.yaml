@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wordlist-generator-BBS_PROJECT_CODE
+  labels:
+    app: wordlist-generator-BBS_PROJECT_CODE
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: wordlist-generator-BBS_PROJECT_CODE
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory
+      containers:
+      - name: wordlist-generator-BBS_PROJECT_CODE
+        image: smokingcaterpillar/bbs-osintel-github-subs
+        volumeMounts:
+        - name: data-volume
+          mountPath: /optdata
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          echo wordlist-generator v1
+          echo Code: BBS_PROJECT_CODE
+          echo Id: BBS_PROJECT_ID
+          echo List: BBS_PROJECT_LIST
+          
+          ## BBRF SETUP ##
+          echo setting up BBRF...
+          cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
+          bbrf use BBS_PROJECT_CODE
+          ## BBRF SETUP ##
+          
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/wordlist/
+          
+          
+          echo creating param wordlist...
+          bbrf urls --with-query | unfurl --unique keys > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/wordlist/params.txt
+          echo ""
+          
+            
+          echo all done
+      restartPolicy: Never
+
