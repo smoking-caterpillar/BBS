@@ -16,17 +16,12 @@ spec:
         hostPath: 
           path: /mnt/volume_lon1_01
           type: Directory
-      - name: configmap-volume
-        configMap:
-          name: arjun-configmap 
       containers:
       - name: arjun-BBS_PROJECT_CODE
         image: smokingcaterpillar/bbs-osintel-gau-subs
         volumeMounts:
         - name: data-volume
           mountPath: /optdata
-        - name: configmap-volume
-          mountPath: /wordlists
         command: 
         - /bin/bash
         - -c
