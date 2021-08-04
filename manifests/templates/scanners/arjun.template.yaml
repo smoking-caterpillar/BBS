@@ -48,8 +48,8 @@ spec:
           pip3 install arjun
           
       
-          
-          arjun -i /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST -c 100 --stable > arjun.log.txt
+          echo running arjun...
+          arjun -oT arjun.txt -i /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST -c 100 --stable  > arjun.log.txt
           
           
                     
