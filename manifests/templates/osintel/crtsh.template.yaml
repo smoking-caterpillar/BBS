@@ -18,6 +18,7 @@ data:
       echo [i] colsolidate results in $DATA_DIR/$( date +"%Y-%m-%d")_$1.out.txt
       cat $DATA_DIR/$( date +"%Y-%m-%d")_$1.crtsh.out.txt >> $DATA_DIR/$( date +"%Y-%m-%d")_$1.out.txt
       sort -u $DATA_DIR/$( date +"%Y-%m-%d")_$1.out.txt -o $DATA_DIR/$( date +"%Y-%m-%d")_$1.out.txt  
+      cat $1.out.txt  | bbrf domain add - -t "added_by:crtsh"
     else
       fetch $1
     fi
@@ -88,7 +89,8 @@ spec:
             echo Running crt.sh on "$line"
             domainname=`echo http://$line | unfurl format %r.%t`
             echo looking up $domainname
-            sh /opt/crtsh/crt.sh $domainname            
+            sh /opt/crtsh/crt.sh $domainname
+                        
             counter=$((counter+1))
           done < "$input"         
                     
