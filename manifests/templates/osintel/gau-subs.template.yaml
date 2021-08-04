@@ -38,6 +38,8 @@ spec:
           ## BBRF SETUP ##
           
           cd /optdata/BBS
+          echo removing previous data...
+          rm -rf output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/
           echo reading list items
           counter=0
           input="output/project-data/BBS_PROJECT_CODE/scope/generated/inscope.wildcard-domains.txt"
