@@ -51,8 +51,8 @@ spec:
             counter=$((counter+1))
           done < "$input"
           
-          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/$HOSTNAME.*.urls.txt | anew > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt
-          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt | unfurl format %d | anew > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt
+          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/$HOSTNAME.*.urls.txt  > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt
+          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt | unfurl format %d > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt
           
           ## Add data into BBRF ##
           cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt | bbrf domain add - -t "added_by:gau-subs"
