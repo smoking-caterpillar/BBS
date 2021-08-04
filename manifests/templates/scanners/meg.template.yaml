@@ -4,6 +4,19 @@ metadata:
   name: meg-configmap
 data:     
   custom.paths.txt: |-
+    admin
+    config
+    blog
+    backup
+    backups
+    s3
+    backup.zip
+    sitebackup.zip
+    site-backup.zip
+    site.zip
+    websitebackup.zip
+    website-backup.zip
+    website.zip
     .babelrc
     .bash_history
     .bashrc
@@ -71,6 +84,8 @@ data:
     yarn-error.log
     yarn.lock
     environment.js
+    debug.log
+    error.log
     
 ---
 apiVersion: batch/v1
@@ -131,6 +146,8 @@ spec:
           rm -rf ./out
           
           meg --verbose /wordlists/custom.paths.txt /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST  > meg.log.txt
+          
+          cat meg.log.txt | grep "(200" > meg.urls.200.txt
           
           
                     
