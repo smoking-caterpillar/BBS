@@ -73,6 +73,7 @@ data:
     /environment.js
     
 ---
+apiVersion: v1
 kind: Job
 metadata:
   name: meg-BBS_PROJECT_CODE
