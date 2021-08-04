@@ -127,7 +127,7 @@ spec:
           echo Installing meg...
           go get -u github.com/tomnomnom/meg
           
-          meg --verbose /wordlists/custom.paths.txt /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST 
+          meg --verbose /wordlists/custom.paths.txt /optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST  > meg.log.txt
           
           
                     
