@@ -18,7 +18,7 @@ data:
       echo [i] colsolidate results in $DATA_DIR/$( date +"%Y-%m-%d")_$1.out.txt
       cat $DATA_DIR/$( date +"%Y-%m-%d")_$1.crtsh.out.txt >> $DATA_DIR/$( date +"%Y-%m-%d")_$1.out.txt
       sort -u $DATA_DIR/$( date +"%Y-%m-%d")_$1.out.txt -o $DATA_DIR/$( date +"%Y-%m-%d")_$1.out.txt  
-      cat $1.out.txt  | bbrf domain add - -t "added_by:crtsh"
+      cat $DATA_DIR/$( date +"%Y-%m-%d")_$1.out.txt   | bbrf domain add - -t "added_by:crtsh"
     else
       fetch $1
     fi
