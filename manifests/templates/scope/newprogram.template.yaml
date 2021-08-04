@@ -38,13 +38,13 @@ spec:
           bbrf use BBS_PROJECT_CODE
           ## BBRF SETUP ##
           
-          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scope-given/
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/scope-given/
           
           #copy data from nextcloud shared folder
-          cp /optdata/BBS/output/private/nextcloud-https-V7/data/__groupfolders/1/BBS_PROJECT_CODE/* /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scope-given/
+          cp /optdata/BBS/output/private/nextcloud-https-V7/data/__groupfolders/1/BBS_PROJECT_CODE/* /optdata/BBS/output/project-data/BBS_PROJECT_CODE/scope-given/
           
           echo reading list items
-          input="/optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scope-given/scope.in.txt"
+          input="/optdata/BBS/output/project-data/BBS_PROJECT_CODE/scope-given/scope.in.txt"
           while IFS= read -r line
           do
             echo Adding to scope: "$line"
@@ -53,7 +53,7 @@ spec:
           
           
           echo reading list items
-          input="/optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scope-given/scope.out.txt"
+          input="/optdata/BBS/output/project-data/BBS_PROJECT_CODE/scope-given/scope.out.txt"
           while IFS= read -r line
           do
             echo Removing from scope: "$line"
