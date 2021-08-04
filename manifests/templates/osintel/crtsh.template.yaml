@@ -81,7 +81,7 @@ spec:
           cd /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/osintel/crtsh/data/$HOSTNAME/
           echo reading list items
           counter=0
-          input="output/project-data/BBS_PROJECT_CODE/scope/generated/inscope.wildcard-domains.txt"
+          input="/optdata/BBS/output/project-data/BBS_PROJECT_CODE/scope/generated/inscope.wildcard-domains.txt"
           while IFS= read -r line
           do
             echo Running crt.sh on "$line"
