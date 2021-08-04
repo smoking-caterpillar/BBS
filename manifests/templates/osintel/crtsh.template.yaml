@@ -85,7 +85,9 @@ spec:
           while IFS= read -r line
           do
             echo Running crt.sh on "$line"
-            bash /opt/crtsh/crt.sh $line            
+            domainname=`echo http://$line | unfurl format %r.%t`
+            echo looking up $domainname
+            bash /opt/crtsh/crt.sh $domainname            
             counter=$((counter+1))
           done < "$input"         
                     
