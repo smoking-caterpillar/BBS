@@ -88,7 +88,7 @@ spec:
             echo Running crt.sh on "$line"
             domainname=`echo http://$line | unfurl format %r.%t`
             echo looking up $domainname
-            bash /opt/crtsh/crt.sh $domainname            
+            sh /opt/crtsh/crt.sh $domainname            
             counter=$((counter+1))
           done < "$input"         
                     
