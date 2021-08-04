@@ -47,6 +47,15 @@ spec:
           echo dumping domains
           bbrf domains > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/domains.txt
           echo ""
+          echo dumping resolved domains
+          bbrf domains --view resolved > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/domains.resolved.txt
+          echo ""
+          echo dumping unresolved domains
+          bbrf domains --view unresolved > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/domains.unresolved.txt
+          echo ""
+          
+          
+
           echo dumping ips
           bbrf ips > /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/bbrf/ips.txt
           echo ""
