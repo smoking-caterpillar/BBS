@@ -50,15 +50,16 @@ spec:
             echo looking up $domainname
             mkdir -p output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/
             gau -o output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/$HOSTNAME.$counter.urls.txt -subs $domainname
+            
+
+            cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/$HOSTNAME.$counter.urls.txt  | bbrf url add - -t "added_by:gau-subs"
+            
+            
+            
             counter=$((counter+1))
           done < "$input"
           
-          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/data/$HOSTNAME/$HOSTNAME.*.urls.txt  > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt
-          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt | unfurl format %d > output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt
           
-          ## Add data into BBRF ##
-          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.domains.txt | bbrf domain add - -t "added_by:gau-subs"
-          cat output/project-data/BBS_PROJECT_CODE/data/osintel/gau-subs/discovered.urls.txt | bbrf url add - -t "added_by:gau-subs"
           
       
           echo all done
