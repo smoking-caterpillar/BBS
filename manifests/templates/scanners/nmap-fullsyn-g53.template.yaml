@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nmap-fullsyn-g53-BBS_PROJECT_CODE
+  labels:
+    app: nmap-fullsyn-g53-BBS_PROJECT_CODE
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: nmap-fullsyn-g53-BBS_PROJECT_CODE
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01
+          type: Directory
+      containers:
+      - name: nmap-fullsyn-g53-BBS_PROJECT_CODE
+        image: smokingcaterpillar/bbs-osintel-github-subs
+        volumeMounts:
+        - name: data-volume
+          mountPath: /optdata
+        command: 
+        - /bin/bash
+        - -c
+        - |
+          echo nmap-fullsyn-g53 v1
+          echo Code: BBS_PROJECT_CODE
+          echo Id: BBS_PROJECT_ID
+          echo List: BBS_PROJECT_LIST
+          
+          ## BBRF SETUP ##
+          echo setting up BBRF...
+          cp /optdata/BBS/output/private/bbrs-config.json /root/.bbrf/config.json
+          bbrf use BBS_PROJECT_CODE
+          ## BBRF SETUP ##
+          
+          apt update
+          apt-get install libpcap-dev nmap -y
+
+          
+          
+          mkdir -p /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/nmap-fullsyn-g53/data/$HOSTNAME/
+          cd /optdata/BBS/output/project-data/BBS_PROJECT_CODE/data/scanner/nmap-fullsyn-g53/
+          
+          nmap -g 53 --max-hostgroup 5 -sS --max-retries 0 -p - -oA nmap-fullsyn-g53 -iL "/optdata/BBS/output/project-data/BBS_PROJECT_CODE/BBS_PROJECT_LIST" 
+          
+          
+          
+                    
+          echo all done
+      restartPolicy: Never
+
