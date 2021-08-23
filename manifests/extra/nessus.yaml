@@ -15,7 +15,7 @@ spec:
       volumes:
       - name: data-volume
         hostPath: 
-          path: /mnt/volume_lon1_01/BBS/output/private/extra-nessus-v4/
+          path: /mnt/volume_lon1_01/BBS/output/private/extra-nessus-v5/
           type: DirectoryOrCreate 
       containers:
       - name: nessus
@@ -40,9 +40,9 @@ spec:
         - -c
         - |
           echo stuff
-          cp -r /opt/nessus/var/nessus/ /nessus-data/
+          cp -r /opt/nessus/var/nessus/ /nessus-data/nessus
           rm -rf /opt/nessus/var/nessus/
-          ln -s /opt/nessus/var/nessus /nessus-data/
+          ln -s /opt/nessus/var/nessus /nessus-data/nessus
           ls -la /opt/nessus/var/
           
           /usr/bin/nessus_startup.sh
