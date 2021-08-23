@@ -40,7 +40,13 @@ spec:
         - -c
         - |
           echo stuff
-          cp -r /opt/nessus/var/nessus/ /nessus-data/nessus
+          echo copy
+          cp -r /opt/nessus/var/nessus /nessus-data/
+          ls -la /nessus-data/
+          
+          echo bah
+          
+          
           rm -rf /opt/nessus/var/nessus/
           ln -s /opt/nessus/var/nessus /nessus-data/nessus
           ls -la /opt/nessus/var/
