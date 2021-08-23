@@ -15,7 +15,7 @@ spec:
       volumes:
       - name: data-volume
         hostPath: 
-          path: /mnt/volume_lon1_01/BBS/output/private/extra-nessus-v5/
+          path: /mnt/volume_lon1_01/BBS/output/private/extra-nessus-v7/
           type: DirectoryOrCreate 
       containers:
       - name: nessus
