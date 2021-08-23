@@ -12,9 +12,17 @@ spec:
       labels:
         app: mobsf
     spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01/BBS/output/private/extra-mobsf/
+          type: DirectoryOrCreate 
       containers:
       - name: mobsf
         image: opensecurity/mobile-security-framework-mobsf   
+        volumeMounts:
+        - name: data-volume
+          mountPath: /root/.MobSF
         ports:
         - containerPort: 8000
 ---
