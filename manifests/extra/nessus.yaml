@@ -15,14 +15,14 @@ spec:
       volumes:
       - name: data-volume
         hostPath: 
-          path: /mnt/volume_lon1_01/BBS/output/private/extra-nessus-v2/
+          path: /mnt/volume_lon1_01/BBS/output/private/extra-nessus-v4/
           type: DirectoryOrCreate 
       containers:
       - name: nessus
         image: stevemcgrath/nessus_scanner
         volumeMounts:
         - name: data-volume
-          mountPath: /opt/nessus/var/
+          mountPath: /nessus-data/
         env:
         - name: LICENSE
           valueFrom:
@@ -40,7 +40,10 @@ spec:
         - -c
         - |
           echo stuff
-          
+          cp /opt/nessus/var/nessus/ /nessus-data/
+          rm -rf /opt/nessus/var/nessus/
+          ln -s /opt/nessus/var/nessus /nessus-data/
+          ls -la /opt/nessus/var/
           
           /usr/bin/nessus_startup.sh
 ---
