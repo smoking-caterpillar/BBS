@@ -1,0 +1,50 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: nessus-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nessus
+  replicas: 1 # only run 1 pod
+  template:
+    metadata:
+      labels:
+        app: nessus
+    spec:
+      containers:
+      - name: nessus
+        image: stevemcgrath/nessus_scanner
+        env:
+        - name: LICENSE
+          valueFrom:
+            secretKeyRef:
+              name: bbs-config
+              key: NESSUS-LICENSE
+        - name: ADMIN_USER
+          value: "notadmin"   
+        - name: ADMIN_PASS
+          value: "heybert42ggw"   
+        ports:
+        - containerPort: 8834
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          echo stuff
+          
+          
+          /usr/bin/nessus_startup.sh
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nessus-service
+spec:
+  selector:
+    app: nessus
+  ports:
+  - protocol: TCP
+    port: 8834
+    targetPort: 8834
+  internalTrafficPolicy: Local
