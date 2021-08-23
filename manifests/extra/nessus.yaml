@@ -43,11 +43,12 @@ spec:
           echo copy
           cp -r /opt/nessus/var/nessus /nessus-data/
           ls -la /nessus-data/
+          ls -la /nessus-data/nessus/
           
-          echo bah
-          
-          
+          echo removing opt data...
           rm -rf /opt/nessus/var/nessus/
+          
+          echo linking...
           ln -s /opt/nessus/var/nessus /nessus-data/nessus
           ls -la /opt/nessus/var/
           
