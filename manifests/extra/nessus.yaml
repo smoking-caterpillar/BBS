@@ -15,7 +15,7 @@ spec:
       volumes:
       - name: data-volume
         hostPath: 
-          path: /mnt/volume_lon1_01/BBS/output/private/extra-nessus-v8/
+          path: /mnt/volume_lon1_01/BBS/output/private/extra-nessus-v9/
           type: DirectoryOrCreate 
       containers:
       - name: nessus
@@ -36,12 +36,18 @@ spec:
         ports:
         - containerPort: 8834
         command: 
-        - /bin/sh
+        - /bin/bash
         - -c
         - |
           echo stuff
           echo copy
-          cp -r /opt/nessus /nessus-data/
+          
+          if [ ! -d "/nessus-data/nessus" ] 
+          then
+            echo "Directory /nessus-data/nessus DOES NOT exists." 
+            cp -r /opt/nessus /nessus-data/
+          fi
+          
           ls -la /nessus-data/
           ls -la /nessus-data/nessus/
           
