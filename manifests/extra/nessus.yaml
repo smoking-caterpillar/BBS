@@ -12,9 +12,17 @@ spec:
       labels:
         app: nessus
     spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01/BBS/output/private/extra-nessus/
+          type: DirectoryOrCreate 
       containers:
       - name: nessus
         image: stevemcgrath/nessus_scanner
+        volumeMounts:
+        - name: data-volume
+          mountPath: /opt/nessus/var/nessus
         env:
         - name: LICENSE
           valueFrom:
