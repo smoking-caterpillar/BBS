@@ -1,0 +1,56 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: kali-deployment
+spec:
+  selector:
+    matchLabels:
+      app: kali
+  replicas: 1 # only run 1 pod
+  template:
+    metadata:
+      labels:
+        app: kali
+    spec:
+      volumes:
+      - name: data-volume
+        hostPath: 
+          path: /mnt/volume_lon1_01/BBS/output/private/extra-kali/
+          type: DirectoryOrCreate 
+      containers:
+      - name: kali
+        image: kalilinux/kali-rolling
+        volumeMounts:
+        - name: data-volume
+          mountPath: /kali-data/
+        ports:
+        - containerPort: 22
+        command: 
+        - /bin/bash
+        - -c
+        - |
+          echo kali stuff
+          
+          apt-get update 
+          apt-get install -y openssh-server metasploit-framework
+          mkdir /var/run/sshd 
+          sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config 
+          sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config 
+          sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config 
+          echo 'root:kali' | chpasswd
+          
+          echo starting sshd...
+          /usr/sbin/sshd -D
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kali-ssh-service
+spec:
+  selector:
+    app: kali
+  ports:
+  - protocol: TCP
+    port: 22
+    targetPort: 22
+  internalTrafficPolicy: Local
